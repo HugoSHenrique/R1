@@ -1,0 +1,88 @@
+#include <IRremote.h>
+int IR_Recv = 11;   //Pino OUT do Receptor Infravermelho (IR)
+float aux;
+boolean L1= false;
+boolean L2= false;
+boolean L3= false;
+boolean L4= false;
+boolean L5= false;
+boolean L6= false;
+ 
+IRrecv irrecv(IR_Recv);
+decode_results results;
+ 
+void setup(){
+  Serial.begin(9600); //iniciamos a comunicacao serial
+  irrecv.enableIRIn(); //inicia o receptor infravermelho (IR)
+  pinMode(10, OUTPUT); // configuramos o pino digital como saída
+  pinMode(9, OUTPUT); // configuramos o pino digital como saída
+  pinMode(8, OUTPUT); // configuramos o pino digital como saída
+  pinMode(7, OUTPUT); // configuramos o pino digital como saída
+  pinMode(6, OUTPUT); // configuramos o pino digital como saída
+  pinMode(5, OUTPUT); // configuramos o pino digital como saída
+ 
+}
+ 
+void loop(){
+  
+    if (irrecv.decode(&results)) {
+    Serial.println(results.value, HEX);
+    aux = (results.value);
+
+//-------------------------------------
+   if(aux == 0xFF30CF){
+    digitalWrite(5, HIGH);
+    L1 = !L1;
+    }
+    else if(L1 == false)
+    {
+    digitalWrite(5, LOW);
+    }
+//--------------------------------------
+    if(aux == 0xFF18E7){
+    digitalWrite(6, HIGH);
+    L2 = !L2;
+    }
+    else if(L2 == false)
+    {
+    digitalWrite(6, LOW);
+    }
+//---------------------------------------
+    if(aux == 0xFF7A85){
+    digitalWrite(7, HIGH);
+    L3 = !L3;
+    }
+    else if(L3 == false)
+    {
+    digitalWrite(7, LOW);
+    }
+//----------------------------------------  
+    if(aux == 0xFF10EF){
+    digitalWrite(8, HIGH);
+    L4 = !L4;
+    }
+    else if(L4 == false)
+    {
+    digitalWrite(8, LOW);
+    }
+//------------------------------------------
+    if(aux == 0xFF38C7){
+    digitalWrite(9, HIGH);
+    L5 = !L5;
+    }
+    else if(L5 == false)
+    {
+    digitalWrite(9, LOW);
+    }
+//-------------------------------------------
+    if(aux == 0xFF5AA5 ){
+    digitalWrite(10, HIGH);
+    L6 = !L6;
+    }
+    else if(L6 == false)
+    {
+    digitalWrite(10, LOW);
+    }          
+    irrecv.resume(); // Receive the next value
+  }
+}
